@@ -16,3 +16,6 @@ source .venv/bin/activate
 python3 main.py
 ```
 仮想環境を有効にしてから、main.pyを実行してください。
+
+# Contributing
+Welcome!
