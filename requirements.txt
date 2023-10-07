@@ -1,0 +1,6 @@
+discord[voice]
+pyyaml
+discord-py-interactions
+pynacl
+requests
+wave
