@@ -1,11 +1,11 @@
-if test -f .venv; then
+if [ ! -e ./.venv ] ; then
   echo " - Creating virtual enviroment"
   python3 -m venv .venv
   source .venv/bin/activate
   pip3 install -r requirements.txt
 fi
 
-if test -f config.yml; then
+if [ ! -e ./config.yml ] ; then
   echo " - Creating config.yml"
   touch config.yml
   echo    "access_token: DISCORD_ACCESS_TOKEN
