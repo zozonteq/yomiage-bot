@@ -17,28 +17,28 @@ if __name__ == "__main__":
     rvc_pitch = 0 
     rvc_client = Client("http://localhost:7865/")
     result = rvc_client.predict(
-                    "hutao-jp.pth",	# 推論ファイル
-                    0,
-                    0,
-                    api_name="/infer_change_voice"
+        "hutao-jp.pth",	# 推論ファイル
+        0,
+        0,
+        api_name="/infer_change_voice"
     )
 
 
     def rvc(filepath):
         result = rvc_client.predict(
-                    0,	
-                    filepath,	
-                    rvc_pitch,	#ピッチ
-                    filepath,
-                    "pm",	# pm or harvest or crepe
-                    "Howdy!",	
-                    "null",	
-                    0,	
-                    0,	
-                    0,	
-                    0,	
-                    0,	
-                    api_name="/infer_convert"
+            0,	
+            filepath,	
+            rvc_pitch,	#ピッチ
+            filepath,
+            "pm",	# pm or harvest or crepe
+            "Howdy!",	
+            "null",	
+            0,	
+            0,	
+            0,	
+            0,	
+            0,	
+            api_name="/infer_convert"
         )
         print("rvc_pitch:"+str(rvc_pitch));
         return result[1]
@@ -79,19 +79,22 @@ if __name__ == "__main__":
 
     client = discord.Client(intents=discord.Intents.all())
     tree = app_commands.CommandTree(client)
+
     @client.event
     async def on_ready():
         print("Bot started!")
         print(f"https://discord.com/api/oauth2/authorize?client_id={discord_application_id}&permissions=3148864&scope=bot%20applications.commands")
         await tree.sync()#スラッシュコマンドを同期
+
     @tree.command(name="vrvcv",description="change rvc model")
     async def change_rvcmodel_command(interaction:discord.Interaction,text:str):
         rvc_client.predict(
-				text,	# 推論ファイル
-				0,
-				0,
-				api_name="/infer_change_voice")
+            text,	# 推論ファイル
+            0,
+            0,
+            api_name="/infer_change_voice")
         await interaction.response.send_message("変更しました。",ephemeral=True)
+
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
         if interaction.user.voice is None:
@@ -99,15 +102,18 @@ if __name__ == "__main__":
         else:
             await interaction.response.send_message("ボイスチャンネルに接続中です。")
             await interaction.user.voice.channel.connect()
+
     @tree.command(name="vleave",description="ボイスチャットから切断します。")
     async def join_command(interaction:discord.Interaction):
         await interaction.guild.voice_client.disconnect()
         await interaction.response.send_message("切断しました。")
+
     @tree.command(name="vpitch",description="ピッチを調節します。")
     async def pitch_command(interaction:discord.Interaction,value:int):
         global rvc_pitch 
         rvc_pitch = value
         await interaction.response.send_message(f"ピッチを{value}に設定しました。")
+        
     @client.event
     async def on_message(message):
         if not message.author.bot:
@@ -115,10 +121,10 @@ if __name__ == "__main__":
                 content = message.content
                 if checker.is_url(content):
                     content = "URL"
-                
-                msg_uuid = str(uuid.uuid4())
-                generate_wav(content,2,f"temp/wav/{msg_uuid}.wav")
-                rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
-                message.guild.voice_client.play(discord.FFmpegPCMAudio(rvc_voice_path))
+                if not checker.ignore_check(content):
+                    msg_uuid = str(uuid.uuid4())
+                    generate_wav(content,2,f"temp/wav/{msg_uuid}.wav")
+                    rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
+                    message.guild.voice_client.play(discord.FFmpegPCMAudio(rvc_voice_path))
 
     client.run(discord_access_token)
