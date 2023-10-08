@@ -1,3 +1,6 @@
+mkdir -p ~/temp/wav
+
+
 if [ ! -e ./.venv ] ; then
   echo " - Creating virtual enviroment"
   python3 -m venv .venv

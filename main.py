@@ -6,17 +6,19 @@ import json
 import wave
 
 
-def generate_wav(text, speaker=1, filepath='./temp/audio.wav'):
+def generate_wav(text, speaker=1, filepath='./temp/wav/audio.wav'):
     host = 'localhost'
     port = 50021
     params = (
         ('text', text),
         ('speaker', speaker),
+        ("enable_interrogative_upspeak",True)
     )
     response1 = requests.post(
         f'http://{host}:{port}/audio_query',
         params=params
     )
+    print(response1.json())
     headers = {'Content-Type': 'application/json',}
     response2 = requests.post(
         f'http://{host}:{port}/synthesis',
@@ -24,13 +26,10 @@ def generate_wav(text, speaker=1, filepath='./temp/audio.wav'):
         params=params,
         data=json.dumps(response1.json())
     )
+    with open(filepath,mode="wb") as f:
+        f.write(response2.content)
+        f.close()
 
-    wf = wave.open(filepath, 'wb')
-    wf.setnchannels(1)
-    wf.setsampwidth(2)
-    wf.setframerate(24000)
-    wf.writeframes(response2.content)
-    wf.close()
 
 
 if __name__ == "__main__":
@@ -67,8 +66,8 @@ if __name__ == "__main__":
             return
         else:
             if message.guild.voice_client is not None:
-                generate_wav(message.content,2,f"./temp/{message.content}.wav")
-                message.guild.voice_client.play(discord.FFmpegPCMAudio(f"./temp/{message.content}.wav"))
+                generate_wav(message.content,2,f"./temp/wav/{message.content}.wav")
+                message.guild.voice_client.play(discord.FFmpegPCMAudio(f"./temp/wav/{message.content}.wav"))
                 print(message.content)
 
     client.run(discord_access_token)
