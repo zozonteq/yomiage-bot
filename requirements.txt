@@ -4,3 +4,4 @@ discord-py-interactions
 pynacl
 requests
 wave
+gradio_client
