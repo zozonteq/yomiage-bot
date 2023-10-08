@@ -8,20 +8,26 @@ from gradio_client import Client
 import os
 import uuid
 from src import checker
+from src import config
 
 #ayaka-jp_e101.pth
 #hutao-jp.pth
 
 
 if __name__ == "__main__":
+    config = config.Config()
     rvc_pitch = 0 
-    rvc_client = Client("http://localhost:7865/")
-    result = rvc_client.predict(
-        "hutao-jp.pth",	# 推論ファイル
-        0,
-        0,
-        api_name="/infer_change_voice"
-    )
+    rvc_client = None
+    if not config.rvc_disabled:
+        rvc_client = Client(f"http://{config.rvc_host}:{config.rvc_port}/")
+
+        result = rvc_client.predict(
+            "hutao-jp.pth",	# 推論ファイル
+            0,
+            0,
+            api_name="/infer_change_voice"
+        )
+
 
 
     def rvc(filepath):
@@ -119,12 +125,25 @@ if __name__ == "__main__":
         if not message.author.bot:
             if message.guild.voice_client is not None:
                 content = message.content
+                if len(content) > config.max_text_length:
+                    content = content[0:config.max_text_length] + "以下省略"
                 if checker.is_url(content):
                     content = "URL"
                 if not checker.ignore_check(content):
                     msg_uuid = str(uuid.uuid4())
                     generate_wav(content,2,f"temp/wav/{msg_uuid}.wav")
-                    rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
-                    message.guild.voice_client.play(discord.FFmpegPCMAudio(rvc_voice_path))
+                    output_wav_file = os.path.abspath(f"temp/wav/{msg_uuid}.wav")
+                    if not config.rvc_disabled:
+                        rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
+                        output_wav_file = rvc_voice_path
+                    speaked_state = True
+                    while speaked_state:
+                        try:
+                            message.guild.voice_client.play(discord.FFmpegPCMAudio(output_wav_file))
+                        except discord.errors.ClientException:
+                            pass
+                        else:
+                            speaked_state = False
+
 
     client.run(discord_access_token)

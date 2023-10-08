@@ -1,4 +1,4 @@
-mkdir -p ~/temp/wav
+mkdir -p ./temp/wav
 
 
 if [ ! -e ./.venv ] ; then
@@ -11,8 +11,18 @@ fi
 if [ ! -e ./config.yml ] ; then
   echo " - Creating config.yml"
   touch config.yml
-  echo    "access_token: DISCORD_ACCESS_TOKEN
-client_id: DISCORD_CLIENT_ID" >> config.yml
+  echo    'access_token: DISCORD_ACCESS_TOKEN
+client_id: DISCORD_CLIENT_ID
+
+rvc_disabled: True
+rvc_host: "localhost"
+rvc_port: 7865
+
+voicevox_host: "localhost"
+voicevox_port: 50021
+
+max_text_length: 10
+' >> config.yml
 fi
 
 if which pacman >/dev/null 2>&1; then
