@@ -9,7 +9,8 @@ import os
 import uuid
 from src import checker
 from src import config
-
+from src import guild_config
+from src import guild_tts_manager
 #ayaka-jp_e101.pth
 #hutao-jp.pth
 
@@ -28,7 +29,7 @@ if __name__ == "__main__":
             api_name="/infer_change_voice"
         )
 
-
+    guild_tts_manager = guild_tts_manager.guild_tts_manager()
 
     def rvc(filepath):
         result = rvc_client.predict(
@@ -73,7 +74,14 @@ if __name__ == "__main__":
         with open(filepath,mode="wb") as f:
             f.write(response2.content)
             f.close()
-        
+    def wav_gen_and_get_path(text): # テキストを受取、生成した読み上げ音声のパスを返す。
+        msg_uuid = str(uuid.uuid4())
+        generate_wav(text,2,f"temp/wav/{msg_uuid}.wav")
+        output_wav_file = os.path.abspath(f"temp/wav/{msg_uuid}.wav")
+        if not config.rvc_disabled:
+            rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
+            output_wav_file = rvc_voice_path
+        return output_wav_file
 
     discord_access_token = "";
     discord_application_id = "";
@@ -104,10 +112,20 @@ if __name__ == "__main__":
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
         if interaction.user.voice is None:
-            await interaction.response.send_message("ボイスチャンネルに接続してください。",ephemeral=True)
+            await interaction.response.send_message("先に、ボイスチャンネルに接続してください。",ephemeral=True)
         else:
-            await interaction.response.send_message("ボイスチャンネルに接続中です。")
             await interaction.user.voice.channel.connect()
+            await interaction.response.send_message("ボイスチャンネルに接続しました。")
+            wav_path = wav_gen_and_get_path("接続しました。")
+            speaked_state = True
+            while speaked_state:
+                try:
+                    interaction.guild.voice_client.play(discord.FFmpegPCMAudio(wav_path))
+                except discord.errors.ClientException:
+                    pass
+                else:
+                    speaked_state = False
+
 
     @tree.command(name="vleave",description="ボイスチャットから切断します。")
     async def join_command(interaction:discord.Interaction):
@@ -130,20 +148,9 @@ if __name__ == "__main__":
                 if checker.is_url(content):
                     content = "URL"
                 if not checker.ignore_check(content):
-                    msg_uuid = str(uuid.uuid4())
-                    generate_wav(content,2,f"temp/wav/{msg_uuid}.wav")
-                    output_wav_file = os.path.abspath(f"temp/wav/{msg_uuid}.wav")
-                    if not config.rvc_disabled:
-                        rvc_voice_path = rvc(os.path.abspath(f"temp/wav/{msg_uuid}.wav"))
-                        output_wav_file = rvc_voice_path
-                    speaked_state = True
-                    while speaked_state:
-                        try:
-                            message.guild.voice_client.play(discord.FFmpegPCMAudio(output_wav_file))
-                        except discord.errors.ClientException:
-                            pass
-                        else:
-                            speaked_state = False
+                    wav_path = wav_gen_and_get_path(content)
+                    guild_tts_manager.enqueue(message.guild.voice_client,message.guild,discord.FFmpegPCMAudio(wav_path))
+
 
 
     client.run(discord_access_token)
