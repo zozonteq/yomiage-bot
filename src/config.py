@@ -1,5 +1,5 @@
 import yaml
-import logger
+from src import logger
 
 class Config:
     discord_access_token = ""
@@ -24,7 +24,7 @@ class Config:
                     print("")
                 try:
                     self.rvc_disabled = bool(obj["rvc_disabled"])
-                    self.rvc_host = bool(obj["rvc_host"])
+                    self.rvc_host = str(obj["rvc_host"])
                     self.rvc_port = int(obj["rvc_port"])
 
                     self.voicevox_host = str(obj["voicevox_host"])
