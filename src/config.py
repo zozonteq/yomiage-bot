@@ -15,7 +15,7 @@ class Config:
     max_text_length = 40
     def __init__(self) :
         try:
-            with open("config.yml") as config_file:
+            with open("./configs/config.yml") as config_file:
                 obj = yaml.safe_load(config_file)
                 try:
                     self.discord_access_token = str(obj["access_token"])

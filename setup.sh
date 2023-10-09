@@ -1,5 +1,5 @@
 mkdir -p ./temp/wav
-
+mkdir -p ./configs
 
 if [ ! -e ./.venv ] ; then
   echo " - Creating virtual enviroment"
@@ -8,9 +8,9 @@ if [ ! -e ./.venv ] ; then
   pip3 install -r requirements.txt
 fi
 
-if [ ! -e ./config.yml ] ; then
-  echo " - Creating config.yml"
-  touch config.yml
+if [ ! -e ./configs/config.yml ] ; then
+  echo " - Creating ./configs/config.yml"
+  touch ./configs/config.yml
   echo    'access_token: DISCORD_ACCESS_TOKEN
 client_id: DISCORD_CLIENT_ID
 
@@ -22,7 +22,7 @@ voicevox_host: "localhost"
 voicevox_port: 50021
 
 max_text_length: 10
-' >> config.yml
+' >> ./configs/config.yml
 fi
 
 if which pacman >/dev/null 2>&1; then

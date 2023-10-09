@@ -100,14 +100,14 @@ if __name__ == "__main__":
         print(f"https://discord.com/api/oauth2/authorize?client_id={discord_application_id}&permissions=3148864&scope=bot%20applications.commands")
         await tree.sync()#スラッシュコマンドを同期
 
-    @tree.command(name="vrvcv",description="change rvc model")
+    @tree.command(name="change_rvc",description="change rvc model")
     async def change_rvcmodel_command(interaction:discord.Interaction,text:str):
         rvc_client.predict(
             text,	# 推論ファイル
             0,
             0,
             api_name="/infer_change_voice")
-        await interaction.response.send_message("変更しました。",ephemeral=True)
+        await interaction.response.send_message(f"RVCモデルを '{str}' に変更しました。")
 
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
