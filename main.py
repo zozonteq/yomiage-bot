@@ -83,13 +83,8 @@ if __name__ == "__main__":
             output_wav_file = rvc_voice_path
         return output_wav_file
 
-    discord_access_token = "";
-    discord_application_id = "";
-
-    with open("config.yml") as config_file:
-        obj = yaml.safe_load(config_file)
-        discord_access_token = str(obj["access_token"])
-        discord_application_id = str(obj["application_id"])
+    discord_access_token = config.discord_access_token
+    discord_application_id =config.discord_application_id
 
     client = discord.Client(intents=discord.Intents.all())
     tree = app_commands.CommandTree(client)
