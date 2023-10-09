@@ -107,7 +107,11 @@ if __name__ == "__main__":
             0,
             0,
             api_name="/infer_change_voice")
-        await interaction.response.send_message(f"RVCモデルを '{str}' に変更しました。")
+        await interaction.response.send_message(f"RVCモデルを '{text}' に変更しました。")
+        
+    @tree.command(name="vspeed",description="読み上げのスピードを変更します。")
+    async def speed_command(interaction:discord.Interaction,speed:int):
+        await interaction.response.send_message(f"この機能は現在実装中です。今後のアップデートで使えるようになります！")
 
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
