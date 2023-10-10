@@ -51,7 +51,9 @@ sudo apt install ffmpeg
 ```
 
 ### VoiceVoxのインストール
-[公式サイト](https://voicevox.hiroshiba.jp)から、.AppImageファイルをダウンロードしインストールしてください。  
+1. [公式サイト](https://voicevox.hiroshiba.jp)から、VoiceVoxのインストーラーをダウンロード。
+2. `chmod +x VOICEVOX-installer.X.Y.Z.linux.sh` で実行権限を与え、`./VOICEVOX-installer.X.Y.Z.linux.sh` でインストーラーを実行します。
+
 ArchLinuxではAURからインストールすることもできます。
 #### ArchLinux
 ```shell
@@ -59,5 +61,24 @@ yay -Sy voicevox-appimage
 ```
 
 ### Retrieval-based-Voice-Conversion-WebUI
-**RVC機能を使わない**場合読み飛ばしてください。
+RVC機能を使わない場合読み飛ばしてください。  
+#### リポジトリ
+https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
+#### インストール　
+日本語のインストール解説ページがあります。下記のURLを参考にインストールしてください。  
+https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/jp/README.ja.md
+
+## 実行
+```
+# VoiceVoxとRetrieval-based-Voice-Conversion-WebUIを起動してから実行してください。
+voicevox
+
+cd path/to/Retrieval-based-Voice-Conversion-WebUI #RVC-webuiのプロジェクトファイルに移動
+python3 infer-webui.py # infer-webui.py の実行
+
+cd path/to/yomiage-bot #プロジェクトファイルに移動
+source .venv/bin/activate # 仮想環境を有効化
+python3 main.py # DiscordBotクライアントの起動
+```
+読み上げボットを起動する前に、「VoiceVox」や「Retrieval-based-Voice-Conversion-WebUI」を起動する必要があります。
 
