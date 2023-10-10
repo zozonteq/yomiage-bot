@@ -117,7 +117,7 @@ if __name__ == "__main__":
                 if not checker.ignore_check(content):
                     wav_path = wav_gen_and_get_path(content)
                     guild_tts_manager.enqueue(interaction.guild.voice_client,interaction.guild,discord.FFmpegPCMAudio(wav_path))
-                    await interaction.response.send_message("OK",ephemeral=True,delete_after=0)
+                    await interaction.response.send_message("OK",ephemeral=True,delete_after=3)
 
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
