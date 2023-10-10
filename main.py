@@ -107,6 +107,17 @@ if __name__ == "__main__":
     @tree.command(name="vspeed",description="読み上げのスピードを変更します。")
     async def speed_command(interaction:discord.Interaction,speed:int):
         await interaction.response.send_message(f"この機能は現在実装中です。今後のアップデートで使えるようになります！")
+    @tree.command(name="silent",description="履歴を残さずに読み上げます")
+    async def silent_command(interaction:discord.Interaction,message:str):
+                content = message
+                if len(content) > config.max_text_length:
+                    content = content[0:config.max_text_length] + "以下省略"
+                if checker.is_url(content):
+                    content = "URL"
+                if not checker.ignore_check(content):
+                    wav_path = wav_gen_and_get_path(content)
+                    guild_tts_manager.enqueue(interaction.guild.voice_client,interaction.guild,discord.FFmpegPCMAudio(wav_path))
+                    await interaction.response.send_message("OK",ephemeral=True,delete_after=0)
 
     @tree.command(name="vjoin",description="ボイスチャットにボットを追加。")
     async def join_command(interaction:discord.Interaction):
@@ -116,14 +127,8 @@ if __name__ == "__main__":
             await interaction.user.voice.channel.connect()
             await interaction.response.send_message("ボイスチャンネルに接続しました。")
             wav_path = wav_gen_and_get_path("接続しました。")
-            speaked_state = True
-            while speaked_state:
-                try:
-                    interaction.guild.voice_client.play(discord.FFmpegPCMAudio(wav_path))
-                except discord.errors.ClientException:
-                    pass
-                else:
-                    speaked_state = False
+            guild_tts_manager.enqueue(interaction.guild.voice_client,interaction.guild,discord.FFmpegPCMAudio(wav_path))
+
 
 
     @tree.command(name="vleave",description="ボイスチャットから切断します。")
