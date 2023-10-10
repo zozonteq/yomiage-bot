@@ -67,7 +67,19 @@ https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
 ### インストール　
 日本語のインストール解説ページがあります。下記のURLを参考にインストールしてください。  
 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/jp/README.ja.md
+### 設定ファイルの変更
+デフォルトでは、RVCの機能が無効になっています。  
+有効にするには、configs/config.ymlのrvc_disabledをTrueからFalseに書き換えてください。
 
+# 構成ファイルの設定
+## DiscordのAPI設定
+ 1.Discordの[開発ポータル](https://discord.com/developers/applications)にアクセスします。  
+ 2.そこから新規アプリ作成し、ApplicationIDとTokenをメモします。
+ 3.Botというタブから「PRESENCE INTENT」,「SERVER MEMBERS INTENT」,「MESSAGE CONTENT INTENT」をすべてオンにします。  
+ 4.configs/config.ymlをテキストエディタで開き、「access_token」、「application_id」をそれぞれ、先程メモしたTokenとApplicationIDに書き換えます。  
+ <br>
+ これでDiscordの設定は完了です。
+ 
 # 実行
 ``` shell
 cd path/to/Retrieval-based-Voice-Conversion-WebUI #RVC-webuiのプロジェクトファイルに移動
@@ -77,5 +89,4 @@ cd path/to/yomiage-bot #プロジェクトファイルに移動
 source .venv/bin/activate # 仮想環境を有効化
 python3 main.py # DiscordBotクライアントの起動
 ```
-読み上げボットを起動する前に、「VoiceVox」や「Retrieval-based-Voice-Conversion-WebUI」を起動する必要があります。
-
+読み上げボットを起動する前に、「VoiceVox」や「Retrieval-based-Voice-Conversion-WebUI」を起動する必要があります。  
