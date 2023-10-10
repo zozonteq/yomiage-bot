@@ -1,8 +1,8 @@
-# セットアップ
+# はじめに
 Bot実行までの手順を解説します。
 
 
-## 依存関係
+# 依存関係
 読み上げボットを動作させるために、以下のソフトウェアが必要です。
  - ffmpeg
  - voicevox
@@ -13,14 +13,14 @@ Bot実行までの手順を解説します。
 
 
 
-## 動作環境
+# 動作環境
 **Linux**をサポートしています。  
 Windows,macOSは今後サポートする予定です。
 
 
 
-## 手順
-### 読み上げボットのセットアップ
+# 依存関係の解消
+## 読み上げボットのセットアップ
 ```shell
 git clone https://github.com/zozonteq/yomiage-bot/
 cd yomiage-bot
@@ -29,50 +29,47 @@ sh setup.sh
 ```
 ArchLinux系統のOSではffmpegとvoicevoxをsetup.shで自動的インストールするようになっています。  
 そのため、ffmpegとvoicevoxのインストール手順については読み飛ばしてください。
-### python3 のインストール
-#### ArchLinux (Manjaro,EndeavourOS)
+## python3 のインストール
+### ArchLinux (Manjaro,EndeavourOS)
 ```shell
 sudo pacman -Sy python3
 ```
-#### Debian系(Ubuntu,Linux Mint)
+### Debian系(Ubuntu,Linux Mint)
 ```shell
 sudo apt update
 sudo apt install pyyhon3 python3-pip
 ```
-### ffmpegのインストール
-#### ArchLinux (Manjaro,EndeavourOS)
+## ffmpegのインストール
+### ArchLinux (Manjaro,EndeavourOS)
 ```shell
 sudo pacman -Sy ffmpeg
 ```
-#### Debian系(Ubuntu,Linux Mint)
+### Debian系(Ubuntu,Linux Mint)
 ```shell
 sudo apt update
 sudo apt install ffmpeg
 ```
 
-### VoiceVoxのインストール
+## VoiceVoxのインストール
 1. [公式サイト](https://voicevox.hiroshiba.jp)から、VoiceVoxのインストーラーをダウンロード。
 2. `chmod +x VOICEVOX-installer.X.Y.Z.linux.sh` で実行権限を与え、`./VOICEVOX-installer.X.Y.Z.linux.sh` でインストーラーを実行します。
 
 ArchLinuxではAURからインストールすることもできます。
-#### ArchLinux
+### ArchLinux
 ```shell
 yay -Sy voicevox-appimage
 ```
 
-### Retrieval-based-Voice-Conversion-WebUI
+## Retrieval-based-Voice-Conversion-WebUI
 RVC機能を使わない場合読み飛ばしてください。  
-#### リポジトリ
+### リポジトリ
 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
-#### インストール　
+### インストール　
 日本語のインストール解説ページがあります。下記のURLを参考にインストールしてください。  
 https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/jp/README.ja.md
 
-## 実行
-```
-# VoiceVoxとRetrieval-based-Voice-Conversion-WebUIを起動してから実行してください。
-voicevox
-
+# 実行
+``` shell
 cd path/to/Retrieval-based-Voice-Conversion-WebUI #RVC-webuiのプロジェクトファイルに移動
 python3 infer-webui.py # infer-webui.py の実行
 
