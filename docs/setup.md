@@ -74,7 +74,7 @@ https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/
 # 構成ファイルの設定
 ## DiscordのAPI設定
  1.Discordの[開発ポータル](https://discord.com/developers/applications)にアクセスします。  
- 2.そこから新規アプリ作成し、ApplicationIDとTokenをメモします。
+ 2.そこから新規アプリ作成し、ApplicationIDとTokenをメモします。  
  3.Botというタブから「PRESENCE INTENT」,「SERVER MEMBERS INTENT」,「MESSAGE CONTENT INTENT」をすべてオンにします。  
  4.configs/config.ymlをテキストエディタで開き、「access_token」、「application_id」をそれぞれ、先程メモしたTokenとApplicationIDに書き換えます。  
  <br>
