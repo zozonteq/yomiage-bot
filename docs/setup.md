@@ -37,7 +37,7 @@ sudo pacman -Sy python3
 ### Debian系(Ubuntu,Linux Mint)
 ```shell
 sudo apt update
-sudo apt install pyyhon3 python3-pip
+sudo apt install python3 python3-pip
 ```
 ## ffmpegのインストール
 ### ArchLinux (Manjaro,EndeavourOS)
@@ -82,9 +82,14 @@ https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/
  
 # 実行
 ``` shell
+# RVC機能を有効にした場合
 cd path/to/Retrieval-based-Voice-Conversion-WebUI #RVC-webuiのプロジェクトファイルに移動
 python3 infer-webui.py # infer-webui.py の実行
 
+# voicevoxの起動
+voicevox
+
+# botの起動
 cd path/to/yomiage-bot #プロジェクトファイルに移動
 source .venv/bin/activate # 仮想環境を有効化
 python3 main.py # DiscordBotクライアントの起動
