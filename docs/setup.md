@@ -1,9 +1,9 @@
 # はじめに
-Bot実行までの手順を解説します。
+Bot実行までの手順を解説します。AIボイスチェンジャー機能を使うかどうかで、セットアップ方法が変わります。
 
 
 # 依存関係
-読み上げボットを動作させるために、以下のソフトウェアが必要です。
+読み上げボットを最低限動作させるために、以下のソフトウェアが必要です。
  - ffmpeg
  - voicevox
  - python3
@@ -12,15 +12,14 @@ Bot実行までの手順を解説します。
  - Retrieval-based-Voice-Conversion-WebUI
 
 
-
 # 動作環境
-**Linux**をサポートしています。  
-Windows,macOSは今後サポートする予定です。
-
-
+**Linux,macOS**をサポートしています。  
+Windowは動作確認していませんが、動くと思います。
 
 # 依存関係の解消
-## 読み上げボットのセットアップ
+
+
+## 読み上げボット(本プログラム)のセットアップ
 ```shell
 git clone https://github.com/zozonteq/yomiage-bot/
 cd yomiage-bot
@@ -34,11 +33,26 @@ ArchLinux系統のOSではffmpegとvoicevoxをsetup.shで自動的インスト�
 ```shell
 sudo pacman -Sy python3
 ```
+
+
 ### Debian系(Ubuntu,Linux Mint)
 ```shell
 sudo apt update
 sudo apt install python3 python3-pip
 ```
+
+
+### 仮想環境作成とpip依存関係解消
+仮想環境(venv)をセットアップします。以下のコマンドで、プロジェクトファイル下に.venvファイルが作成されます。  
+仮想環境は`source .venv/bin/activate`で有効にできます。
+```
+python3 -m venv .venv
+
+source .venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+
 ## ffmpegのインストール
 ### ArchLinux (Manjaro,EndeavourOS)
 ```shell
@@ -52,10 +66,8 @@ sudo apt install ffmpeg
 
 ## VoiceVoxのインストール
 1. [公式サイト](https://voicevox.hiroshiba.jp)から、VoiceVoxのインストーラーをダウンロード。
-2. `chmod +x VOICEVOX-installer.X.Y.Z.linux.sh` で実行権限を与え、`./VOICEVOX-installer.X.Y.Z.linux.sh` でインストーラーを実行します。
-
-ArchLinuxではAURからインストールすることもできます。
-### ArchLinux
+2. `chmod +x VOICEVOX-installer.X.Y.Z.linux.sh` で実行権限を与え、`./VOICEVOX-installer.X.Y.Z.linux.sh` でインストーラーを実行します。　　
+ArchLinuxではVoiceVox公式のスクリプトだと、動作しないことがあるのでAURからインストールすることを推奨します。
 ```shell
 yay -Sy voicevox-appimage
 ```
@@ -77,8 +89,14 @@ https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/
  2.そこから新規アプリ作成し、ApplicationIDとTokenをメモします。  
  3.Botというタブから「PRESENCE INTENT」,「SERVER MEMBERS INTENT」,「MESSAGE CONTENT INTENT」をすべてオンにします。  
  4.configs/config.ymlをテキストエディタで開き、「access_token」、「application_id」をそれぞれ、先程メモしたTokenとApplicationIDに書き換えます。  
+```
+access_token: DISCORD_ACCESS_TOKEN
+client_id: APPLICATION_ID
+```
  <br>
  これでDiscordの設定は完了です。
+
+
  
 # 実行
 ``` shell
