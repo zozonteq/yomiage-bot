@@ -12,7 +12,7 @@ if [ ! -e ./configs/config.yml ] ; then
   echo " - Creating ./configs/config.yml"
   touch ./configs/config.yml
   echo    'access_token: DISCORD_ACCESS_TOKEN
-client_id: DISCORD_CLIENT_ID
+application_id: DISCORD_CLIENT_ID
 
 rvc_disabled: True
 rvc_host: "localhost"
