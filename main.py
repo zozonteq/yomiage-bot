@@ -21,7 +21,7 @@ if __name__ == "__main__":
     rvc_client = None
     if not config.rvc_disabled:
         rvc_client = Client(f"http://{config.rvc_host}:{config.rvc_port}/")
-        rvc_client.httpx_auth = None
+        rvc_client.httpx_auth = None # hack : 定義されていない値を読み取ろうとするエラー修正
 
         result = rvc_client.predict(
             "ayaka-jp.pth",	# 推論ファイル
@@ -98,12 +98,13 @@ if __name__ == "__main__":
 
     @tree.command(name="change_rvc",description="change rvc model")
     async def change_rvcmodel_command(interaction:discord.Interaction,text:str):
+        await interaction.response.send_message("処理中...")
         rvc_client.predict(
             text,	# 推論ファイル
             0,
             0,
             api_name="/infer_change_voice")
-        await interaction.response.send_message(f"RVCモデルを '{text}' に変更しました。")
+        await interaction.edit_original_response(content=f"RVCモデルを '{text}' に変更しました。")
         
     @tree.command(name="vspeed",description="読み上げのスピードを変更します。")
     async def speed_command(interaction:discord.Interaction,speed:int):
