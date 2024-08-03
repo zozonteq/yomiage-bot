@@ -21,9 +21,10 @@ if __name__ == "__main__":
     rvc_client = None
     if not config.rvc_disabled:
         rvc_client = Client(f"http://{config.rvc_host}:{config.rvc_port}/")
+        rvc_client.httpx_auth = None
 
         result = rvc_client.predict(
-            "hutao-jp.pth",	# 推論ファイル
+            "ayaka-jp.pth",	# 推論ファイル
             0,
             0,
             api_name="/infer_change_voice"
