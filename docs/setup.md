@@ -82,6 +82,7 @@ https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/
 ### 設定ファイルの変更
 デフォルトでは、RVCの機能が無効になっています。  
 有効にするには、configs/config.ymlのrvc_disabledをTrueからFalseに書き換えてください。
+また、デフォルトのモデルを指定する必要があります。デフォルトのモデルを変更するには、`configs/config.yml`の`rvc_default_model`の値をデフォルトで使用したいモデルの名前に変更してください。（例：`model.pth`）
 
 # 構成ファイルの設定
 ## DiscordのAPI設定
